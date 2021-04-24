@@ -36083,7 +36083,7 @@ exports.default = _default;
 },{"../images/1.jpeg":"images/1.jpeg","../images/2.jpeg":"images/2.jpeg","../images/3.jpeg":"images/3.jpeg","../images/4.jpeg":"images/4.jpeg"}],"js/shaders/vertex.glsl":[function(require,module,exports) {
 module.exports = "#define GLSLIFY 1\nuniform sampler2D uTexture;\nuniform vec2 uOffset;\nvarying vec2 vUv;\n\nfloat M_PI = 3.141529;\n\nvec3 deformationCurve(vec3 position, vec2 uv, vec2 offset){\n    position.x = position.x + (sin(uv.y * M_PI) * offset.x);\n    position.y = position.y + (sin(uv.x * M_PI) * offset.y);\n    return position;\n}\n\nvoid main(){\n    vUv = uv;\n    vec3 newPosition = deformationCurve(position, uv, uOffset);\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);\n}";
 },{}],"js/shaders/fragment.glsl":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nuniform sampler2D uTexture;\nuniform float uAlpha;\nuniform vec2 uOffset;\nvarying vec2 vUv;\n\nvec3 rgbShift(sampler2D textureimage, vec2 uv, vec2 offset ){\n    float r = texture2D(textureimage, uv + offset).r;\n    vec2 gb = texture2D(textureimage, uv).gb;\n    return vec3(r, gb);\n}\n\nvoid main(){\n    vec3 color = rgbShift(uTexture, vUv, uOffset);\n    gl_FragColor = vec4(color, uAlpha);\n}";
+module.exports = "#define GLSLIFY 1\nuniform sampler2D uTexture;\nuniform float uAlpha;\nuniform vec2 uOffset;\nvarying vec2 vUv;\n\nvec3 rgbShift(sampler2D textureimage, vec2 uv, vec2 offset ){\n    float r = texture2D(textureimage, uv + offset).r;\n    vec2 gb = texture2D(textureimage, uv).gb;\n    return vec3(r, gb);\n}\n\nvoid main(){\n    // vec3 color = texture2D(uTexture, vUv).rgb;\n    vec3 color = rgbShift(uTexture, vUv, uOffset);\n    gl_FragColor = vec4(color, uAlpha);\n}";
 },{}],"js/app.js":[function(require,module,exports) {
 "use strict";
 
@@ -36268,6 +36268,15 @@ var WebGL = /*#__PURE__*/function () {
       this.mesh.position.set(this.offset.x - window.innerWidth / 2, -this.offset.y + window.innerHeight / 2, 0); // set uAlpha when list is hovered / unhovered
 
       this.linkHovered ? this.uniforms.uAlpha.value = lerp(this.uniforms.uAlpha.value, 1.0, 0.1) : this.uniforms.uAlpha.value = lerp(this.uniforms.uAlpha.value, 0.0, 0.1);
+
+      for (var i = 0; i < this.links.length; i++) {
+        if (this.linkHovered) {
+          this.links[i].style.opacity = 0.2;
+        } else {
+          this.links[i].style.opacity = 1;
+        }
+      }
+
       this.renderer.render(this.scene, this.camera);
       window.requestAnimationFrame(this.render.bind(this));
     }
@@ -36305,7 +36314,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61551" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61424" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

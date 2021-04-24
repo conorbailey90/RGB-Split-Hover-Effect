@@ -10,6 +10,7 @@ vec3 rgbShift(sampler2D textureimage, vec2 uv, vec2 offset ){
 }
 
 void main(){
+    // vec3 color = texture2D(uTexture, vUv).rgb;
     vec3 color = rgbShift(uTexture, vUv, uOffset);
     gl_FragColor = vec4(color, uAlpha);
 }

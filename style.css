@@ -9,11 +9,17 @@
   box-sizing: border-box;
   font-family: "Ogg";
   font-size: 1.5rem;
+  color: #131313;
 }
 
 html,
 body {
   background-color: #dadada;
+}
+
+canvas {
+  position: absolute;
+  z-index: -2;
 }
 
 main {
@@ -40,4 +46,9 @@ ul li {
   position: relative;
   border-bottom: 1px solid rgba(0, 0, 0, 0.118);
   cursor: pointer;
+  transition: 1s;
+}
+
+ul li:hover {
+  opacity: 1 !important;
 }

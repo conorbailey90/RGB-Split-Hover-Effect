@@ -32,8 +32,10 @@ class WebGL{
         }
         this.links.forEach((link, idx) => {
             link.addEventListener('mouseenter', () => {
+                
                 switch(idx){
                     case 0:
+                        
                         this.uniforms.uTexture.value = textureOne;
                         break;
                     case 1:
@@ -140,6 +142,16 @@ class WebGL{
         : this.uniforms.uAlpha.value = lerp(this.uniforms.uAlpha.value, 0.0, 0.1);
        
         
+            for(let i = 0; i< this.links.length; i++){
+                if(this.linkHovered){
+                    this.links[i].style.opacity = 0.2
+                }else{
+                    this.links[i].style.opacity = 1
+                }
+                
+            
+        }
+
         this.renderer.render(this.scene, this.camera);
         window.requestAnimationFrame(this.render.bind(this));
         
